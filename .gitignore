@@ -3,3 +3,6 @@
 
 # Ignore bin in the Backend directory
 /Backend/bin
+
+# # Ignore .env in the Backend directory
+# /Backend/.env
