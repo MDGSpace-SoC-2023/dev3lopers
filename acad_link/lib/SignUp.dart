@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
                     },
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.all(49),
+                        padding: const EdgeInsets.all(39),
                         child: Text(
                           'Signup as Professor',
                           style: TextStyle(
@@ -65,7 +65,7 @@ class MainApp extends StatelessWidget {
                     },
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.all(49),
+                        padding: const EdgeInsets.all(39),
                         child: Text(
                           'Signup as a student',
                           style: TextStyle(
