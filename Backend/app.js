@@ -44,4 +44,8 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+// app.get('/ping',(req,res)=>{
+//   res.send('pong')
+// })
+
 module.exports = app;
