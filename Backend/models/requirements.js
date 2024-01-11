@@ -1,25 +1,23 @@
+// requirements.js
 const mongoose = require('mongoose');
-const {Schema}= mongoose;
+const { Schema } = mongoose;
 
-// writing Schema for requirements of project
-const  reqSchema = new Schema({
-    branch:{
-        type:String,
-        required:false
+// Writing Schema for requirements of project
+const reqSchema = new Schema({
+    branch: {
+        type: String,
     },
-    year:{
-        
-        type:Number,
-        required:false
+    year: {
+        type: Number,
     },
-    skills:{
-        type:[String],
-        required:true
+    skills: {
+        type: [String],
+        required: true,
     },
-    cgpa:{
-        type:Number,
-        required:false
-    }
-})
+    cgpa: {
+        type: Number,
+    },
+});
 
-module.exports = mongoose.model('req',reqSchema)  //exporting this schema 
+module.exports = reqSchema; // Export the schema, not the model
+

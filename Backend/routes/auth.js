@@ -39,6 +39,7 @@ try{
      // Now, 'hash' contains the hashed password
       user = await User.create({
         name:req.body.name,
+        role:req.body.role,
         email:req.body.email,
         password:hash,
       });
