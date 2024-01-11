@@ -6,3 +6,6 @@
 
 # Ignore .env in the Backend directory
 /Backend/.env
+
+# Ignore node_modules
+/node_modules
