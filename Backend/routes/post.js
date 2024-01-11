@@ -7,31 +7,31 @@ const User = require('../models/user');
 
 
 // POST endpoint to create requirements
-router.post('/requirements', async (req, res) => {
-    try {
-        const { branch, year, skills, cgpa } = req.body;
+// router.post('/requirements', async (req, res) => {
+//     try {
+//         const { branch, year, skills, cgpa } = req.body;
 
-        const newRequirements = new Requirements({
-            branch,
-            year,
-            skills,
-            cgpa
-        });
+//         const newRequirements = new Requirements({
+//             branch,
+//             year,
+//             skills,
+//             cgpa
+//         });
 
-        const savedRequirements = await newRequirements.save();
+//         const savedRequirements = await newRequirements.save();
 
-        res.status(201).json({ requirements: savedRequirements });
-    } catch (error) {
-        console.error('Error adding requirements:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+//         res.status(201).json({ requirements: savedRequirements });
+//     } catch (error) {
+//         console.error('Error adding requirements:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 
 
 router.post('/professor/addpost', fetchUser, async (req, res) => {
     try {
-        const { title, description, requirementsId } = req.body;
+        const { title, description, requirements } = req.body;
 
         if (req.user.role) {
             return res.status(403).json({ error: 'Permission denied. Only professors can post projects.' });
@@ -48,20 +48,20 @@ router.post('/professor/addpost', fetchUser, async (req, res) => {
         }
 
         // Check if requirementsId is provided
-        if (!requirementsId) {
-            return res.status(400).json({ error: 'Requirements ID is required' });
-        }
+        // if (!requirementsId) {
+        //     return res.status(400).json({ error: 'Requirements ID is required' });
+        // }
 
         // Verify that the Requirements document exists
-        const requirements = await Requirements.findById(requirementsId);
-        if (!requirements) {
-            return res.status(404).json({ error: 'Requirements not found' });
-        }
+        // const requirements = await Requirements.findById(requirementsId);
+        // if (!requirements) {
+        //     return res.status(404).json({ error: 'Requirements not found' });
+        // }
 
         const newProject = new Project({
             title,
             description,
-            requirements: requirementsId,  // Assign the ID of the Requirements document
+            requirements: requirements,  // Assign the ID of the Requirements document
             user: req.user.userId
         });
 
