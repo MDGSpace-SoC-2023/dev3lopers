@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Login.dart';
-
+import 'Profile.dart';
+//import 'HomePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // A widget which will be started on application startup
-      home: const Login(),
+      home: Profile(),
     );
   }
 }

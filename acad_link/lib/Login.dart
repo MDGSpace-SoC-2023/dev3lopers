@@ -1,10 +1,44 @@
 import "package:flutter/material.dart";
 import "dart:ui";
+import 'package:dio/dio.dart';
 
 import "SignUp.dart";
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: 'http://localhost:3000',
+    contentType: 'application/json',
+  ));
+
+  Future<void> _login() async {
+    try {
+      final response = await _dio.post('/users/login', data: {
+        'email': emailController.text,
+        'password': passwordController.text,
+      });
+
+      if (response.data['verified']) {
+        final token = response.data['authToken'];
+        // Save the token and use it for subsequent requests
+        print('Login successful. Token: $token');
+      } else {
+        print('Login failed');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +77,7 @@ class Login extends StatelessWidget {
                         bottom: 23.0,
                       ),
                       child: Icon(Icons.person, color: Color(0xff366bff))),
-                  hintText: 'USER NAME',
+                  hintText: 'USER MAIL',
                   hintStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
