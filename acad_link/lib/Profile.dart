@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,35 +10,38 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body:  Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Color(0xffbdcbfe),
+              Color.fromARGB(255, 197, 220, 232),
+            ],
+                stops: [
+              0.15,
+              0.9
+            ])),
+        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children:  [
             InkWell(
               onTap:() {},
-              child: const Text(
-                '\u{2190} Back',
-                style: TextStyle(
-                  fontFamily:  'pacifico',
-                  color: Colors.black,
-                  decoration: TextDecoration.none,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 36.0),
+                child: const Icon(
+                  Icons.arrow_back,
+                  size: 20,
+                )),
+            const SizedBox(height: 16.0),
             const Align(
-              child:  CircleAvatar(
-                radius: 64.0,
-                backgroundImage: AssetImage('assets/images/OIP.jpeg'),
+              child: CircleAvatar(
+                radius: 61.0,
+                backgroundColor: Colors.black,
                 child: CircleAvatar(
-                  radius: 62.0,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    radius: 60.0,
-                    backgroundImage: AssetImage('assets/images/OIP.jpeg'),
-                  ),
+                  radius: 60.0,
+                  backgroundImage: AssetImage(
+                      'assets/images/OIP.jpeg'),
                 ),
               ),
             ),
@@ -94,11 +95,11 @@ class Profile extends StatelessWidget {
                   ),
                 )
             ],),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 79, 75, 155),
+                      backgroundColor: Colors.lightGreen,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)
                   )
@@ -205,3 +206,5 @@ class Profile extends StatelessWidget {
     );
   }
 }
+
+
