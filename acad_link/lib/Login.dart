@@ -16,23 +16,23 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
 
   final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://9f18-103-37-201-173.ngrok-free.app/',
     contentType: 'application/json',
   ));
 
   Future<void> _login() async {
     try {
-      final response = await _dio.post('/users/login', data: {
+      Response response = await _dio.post('/users/login', data: {
         'email': emailController.text,
         'password': passwordController.text,
       });
 
-      if (response.data['verified']) {
-        final token = response.data['authToken'];
-        // Save the token and use it for subsequent requests
-        print('Login successful. Token: $token');
-      } else {
-        print('Login failed');
+      final authToken = response.data['auth-token'];
+      response = await _dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
+      if(response.data['verified']){
+        print(response.data);
+      }else{
+        print("User doesn't exist");
       }
     } catch (e) {
       print('Error: $e');
