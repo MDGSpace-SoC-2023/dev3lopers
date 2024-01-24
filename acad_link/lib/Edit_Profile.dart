@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Edit_Profile extends StatelessWidget {
-  const Edit_Profile({super.key});
-
+   Edit_Profile({super.key});
+  final _namecontroller = TextEditingController();
+  final _cgpacontroller = TextEditingController();
+  final _phonenumbercontroller = TextEditingController();
+  final _departmentcontroller = TextEditingController();
+  final _graduationcontroller = TextEditingController();
+  final _yearcontroller  = TextEditingController();
+  final _engagementscontroller = TextEditingController();
+  final _descriptioncontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +45,9 @@ class Edit_Profile extends StatelessWidget {
                       ),
                     
                       child: InkWell(
-                        onTap: () => {},
+                        onTap: () => {
+                          Navigator.pop(context)
+                        },
                         child: const Text(
                           'Cancel',
                           style: TextStyle(
@@ -93,6 +102,7 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 20,),
                          TextFormField(
                           initialValue: 'Mohith Reddy',
+                          controller: _namecontroller,
                           decoration: const InputDecoration(
                             labelText: 'Name'
                           ),
@@ -100,6 +110,7 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 10,),
                         TextFormField(
                           initialValue: '7.14',
+                          controller:  _cgpacontroller,
                           decoration: const InputDecoration(
                             labelText: 'CGPA'
                           ),
@@ -107,6 +118,7 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 10,),
                         TextFormField(
                           initialValue: '9491741155',
+                          controller:  _phonenumbercontroller,
                           decoration: const InputDecoration(
                             labelText: 'Phone Number'
                           ),
@@ -114,6 +126,7 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 10,),
                         TextFormField(
                           initialValue: 'ECE',
+                          controller:  _departmentcontroller,
                           decoration: const InputDecoration(
                             labelText: 'Department'
                           ),
@@ -121,36 +134,46 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 10,),
                         TextFormField(
                           initialValue: 'undergraduate',
+                          controller:  _graduationcontroller,
                           decoration: const InputDecoration(
                             labelText: 'Graduation'
                           ),
                         ),
                         const SizedBox(height: 10,),
                         TextFormField(
-                          initialValue: '2',
+                          controller:  _yearcontroller,
                           decoration: const InputDecoration(
                             labelText: 'Year'
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        TextFormField(
-                          initialValue: 'MaRS, Athletics',
+                        TextField(
+                          maxLines: null,
+                          controller:  _engagementscontroller,
                           decoration: const InputDecoration(
-                            labelText: 'Campus Engagements'
+                            labelText: 'Campus Engagements',
+                            hintText: 'clubs you are in and the any other sports events, etc...'
                           ),
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(height: 30,),
                         TextFormField(
+                          controller: _descriptioncontroller,
                           initialValue: 'I am the best',
+                          maxLines: null,
                           decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
                             labelText: 'Description'
                           ),
                         ),
-                        const SizedBox(height: 40,)
+                        const SizedBox(height: 15,),
+                         MaterialButton(onPressed: () {
+
+                        },
+                        color: Colors.green[400],
+                        child:const Text('Save',style: TextStyle(color: Colors.white),),
+                        )
                         ]),
             ))
-                  
-                           
                       ],
                     ),
     );

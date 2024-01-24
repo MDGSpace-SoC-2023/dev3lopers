@@ -1,10 +1,5 @@
+import 'package:acad_link/Edit_Profile.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MaterialApp(
-    home: Profile(),
-  ));
-}
 
 class Profile extends StatelessWidget {
   @override
@@ -104,7 +99,10 @@ class Profile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0)
                   )
                 ),
-                onPressed: () {}, 
+                onPressed: () {
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context)=> const Edit_Profile()));
+                }, 
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 58.0,vertical: 5.0),
                   child: Text(
