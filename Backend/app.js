@@ -7,12 +7,15 @@ var connectToMongo = require('./db');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/auth');
-var postRouter  = require('./routes/post')
-var proposalRouter = require('./routes/proposal')
-var profileRouter = require('./routes/profile')
+var postRouter  = require('./routes/post');
+var proposalRouter = require('./routes/proposal');
+var profileRouter = require('./routes/profile');
+var qnaRouter = require('./routes/qna');
+var filterRouter = require('./routes/filter')
+
 
 var app = express();
-const port = 5000
+const port = process.env.PORT || 5000 ;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,8 +32,11 @@ app.use('/users', usersRouter);
 app.use('/posts',postRouter);
 app.use('/proposal',proposalRouter);
 app.use('/profile',profileRouter);
+app.use('./qna' ,qnaRouter);
+app.use('/',filterRouter)
+
 connectToMongo();
-// catch 404 and forward to error handler
+//catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));
 // });

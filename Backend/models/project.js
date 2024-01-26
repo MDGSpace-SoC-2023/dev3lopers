@@ -20,6 +20,10 @@ const projSchema = new Schema({
     requirements: {
         type: reqSchema, // Using Req as a subdocument schema
     },
+    createdAt: {      // Date when the post was created
+        type: Date,
+        default: Date.now
+    }
 });
 
 const Project = mongoose.model('Project', projSchema);

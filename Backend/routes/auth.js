@@ -35,7 +35,7 @@ try{
   bcrypt.hash(my_password,saltRounds, async(err,hash)=>{
     if(err){
       console.error("Error while hashing password:", err);
-      return res.status(500).send("some error occured");
+      return res.status(500).send("pasword hash error");
     }
      // Now, 'hash' contains the hashed password
       user = await User.create({
