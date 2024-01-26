@@ -4,7 +4,8 @@ var jwt = require('jsonwebtoken');
 const {body,validationResult} = require('express-validator');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const jwt_secret = process.env.JWT_SECRET
+// const jwt_secret = process.env.JWT_SECRET
+const jwt_secret = "fast is fast";
 const fetchUser = require('../middlewares/fetchUser')
 /* GET users listing. */
 
@@ -39,6 +40,7 @@ try{
      // Now, 'hash' contains the hashed password
       user = await User.create({
         name:req.body.name,
+        enrollmentNumber:req.body.enrollmentNumber,
         role:req.body.role,
         email:req.body.email,
         password:hash,
@@ -97,11 +99,12 @@ router.post('/login',[
 
 
 // route for getting user details
-router.post('/getuser',fetchUser,async (req,res)=>{
+router.post('/getuser', fetchUser,async(req,res)=>{
   try{
- const userid = req.user.id;
-const user = await User.findById(userid);
-res.send(user);
+ const userId = req.user.id;
+ console.log(userId);
+const user = await User.findById(userId);
+    res.json({verfied:true,user});
   }catch(error){
     console.error(error.message);
    // return res.status(500).json({error:"some internal server error occured "})

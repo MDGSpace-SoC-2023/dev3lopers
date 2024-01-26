@@ -8,6 +8,8 @@ var connectToMongo = require('./db');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/auth');
 var postRouter  = require('./routes/post')
+var proposalRouter = require('./routes/proposal')
+var profileRouter = require('./routes/profile')
 
 var app = express();
 const port = 5000
@@ -25,6 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts',postRouter);
+app.use('/proposal',proposalRouter);
+app.use('/profile',profileRouter);
 connectToMongo();
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

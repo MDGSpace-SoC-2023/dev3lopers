@@ -6,6 +6,10 @@ const userSchema = new Schema({
         type : String,
         required : true
    },
+   enrollmentNumber: {
+     type: Number,
+     unique: true,
+   },
    role:{
           type : Boolean,
           required : true
@@ -19,6 +23,21 @@ const userSchema = new Schema({
         type : String,
         required : true
    },
+   mobileNumber: {
+     type: String,
+   },
+   department: {
+     type: String,
+   },
+   engagements: {
+     type: [String], // Assuming multiple engagements as an array of strings
+   },
+   cgpa: {
+     type: Number,
+   },
+   description: {
+     type: String,
+   },
    date :{
         type : Date,
        default : Date.now
@@ -27,3 +46,4 @@ const userSchema = new Schema({
 
   const User = mongoose.model('user',userSchema)
   module.exports = User;
+  

@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-jwt_secret = process.env.JWT_SECRET;
+const jwt_secret = "fast is fast";
 
 const fetchUser = (req,res,next)=>{
     const token = req.header('auth-token');
@@ -8,12 +8,15 @@ const fetchUser = (req,res,next)=>{
     }
     
     try {
-        const data = jwt.verify(token, jwt_secret);
+        var data = jwt.verify(token, jwt_secret);
+        console.log('User Data:', data);
+
         req.user = data.user;
         next();
     } catch (error) {
         res.status(401).json({ error: "Invalid auth-token" });
     }
+    
 }    
 
 module.exports = fetchUser;

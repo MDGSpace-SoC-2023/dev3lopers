@@ -4,6 +4,11 @@ const { Schema } = mongoose;
 
 // Schema for project post
 const projSchema = new Schema({
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required:true,
+     },
     title: {
         type: String,
         required: true,
@@ -17,4 +22,5 @@ const projSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('Project', projSchema);
+const Project = mongoose.model('Project', projSchema);
+module.exports = Project;

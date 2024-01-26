@@ -2,17 +2,17 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose;
 
 const studentSchema = new Schema({
-    // userID: {
-    //     type: String,
-    //     required: true,
-    //     unique: true,
-    //   },
+    userID: {
+        type: String,
+        required: true,
+        unique: true,
+      },
       profilePic: {
         type: String, // Assuming you store the path or URL of the profile picture
       },
       name: {
         type: String,
-        required: true,
+        required: true, 
       },
       enrollmentNumber: {
         type: Number,
@@ -34,7 +34,6 @@ const studentSchema = new Schema({
       // },
       department: {
         type: String,
-        required:true,
       },
       engagements: {
         type: [String], // Assuming multiple engagements as an array of strings
@@ -45,16 +44,16 @@ const studentSchema = new Schema({
       description: {
         type: String,
       },
-   password :{
-        type : String,
-        required : true
-   },
-   date :{
-        type : Date,
-       default : Date.now
-   },
+  //  password :{
+  //       type : String,
+  //       required : true
+  //  },
+  //  date :{
+  //       type : Date,
+  //      default : Date.now
+  //  },
 
   });
 
-  const Student = mongoose.model('user',studentSchema);
+  const Student = mongoose.model('student',studentSchema);
   module.exports = Student;
