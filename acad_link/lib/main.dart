@@ -1,5 +1,11 @@
+
+import 'package:acad_link/pages/QnA/qna_page.dart';
+import 'package:acad_link/pages/Signup/SignUp.dart';
+import 'pages/Home/Prof_projects.dart';
+import 'package:acad_link/pages/Signup/Login.dart';
 import 'package:flutter/material.dart';
-import 'Profile.dart';
+import 'pages/Home/Home.dart';
+// import '';
 //import 'HomePage.dart';
 
 void main() => runApp(MyApp());
@@ -18,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // A widget which will be started on application startup
-      home: Profile(),
+      home:const  PP(),
     );
   }
 }

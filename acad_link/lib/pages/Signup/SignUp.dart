@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
+import 'package:acad_link/pages/Signup/Login.dart';
 import 'package:flutter/material.dart';
 import 'SignUpProffesors.dart';
 import 'SignUpStudents.dart';
@@ -14,7 +15,15 @@ class MainApp extends StatelessWidget {
         backgroundColor: Color.fromRGBO(209, 248, 248, 1),
         body: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              GestureDetector(
+                child: Icon(Icons.arrow_back),
+                onTap: () {
+                  Navigator.push(context,MaterialPageRoute(
+                              builder: (context) =>Login()));
+                },
+              ),
               Flex(
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -31,11 +40,11 @@ class MainApp extends StatelessWidget {
                     },
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.all(49),
+                        padding: const EdgeInsets.all(45),
                         child: Text(
                           'Signup as Professor',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Colors.deepPurple[300]),
                         ),
@@ -65,11 +74,11 @@ class MainApp extends StatelessWidget {
                     },
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.all(49),
+                        padding: const EdgeInsets.all(45),
                         child: Text(
                           'Signup as a student',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Colors.deepPurple[300]),
                         ),

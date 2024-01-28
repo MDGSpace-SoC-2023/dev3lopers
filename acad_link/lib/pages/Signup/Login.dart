@@ -1,9 +1,10 @@
+
+import "package:acad_link/pages/Home/Home.dart";
 import "package:flutter/material.dart";
 import "dart:ui";
 import 'package:dio/dio.dart';
 
 import "SignUp.dart";
-
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -12,35 +13,44 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  dynamic error_code;
+  // ignore: unnecessary_brace_in_string_interps
+   late SnackBar snackBar;
 
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: 'https://9f18-103-37-201-173.ngrok-free.app/',
-    contentType: 'application/json',
-  ));
+    Future<bool> _login() async {
+      final Dio _dio = Dio(BaseOptions(
+        baseUrl: 'https://68b3-103-37-201-178.ngrok-free.app/',
+        contentType: 'application/json',
+      ));
+      print("starting the request now");
+      try {
+        Response response = await _dio.post('/users/login', data: {
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        });
+        final authToken = response.data['authToken'];
+        print(authToken);
+        print("received response");
+        response = await _dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
+        // print(response.data);
+        if(response.data['verfied']){
+          print(response.data);
+        }
+        return true;
 
-  Future<void> _login() async {
-    try {
-      Response response = await _dio.post('/users/login', data: {
-        'email': emailController.text,
-        'password': passwordController.text,
-      });
-
-      final authToken = response.data['auth-token'];
-      response = await _dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
-      if(response.data['verified']){
-        print(response.data);
-      }else{
-        print("User doesn't exist");
+      } on DioException catch (e) {
+        print(e.response?.statusCode);
+        error_code = e.response?.statusCode;
+        print("login failed");
+        return false;
       }
-    } catch (e) {
-      print('Error: $e');
     }
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    snackBar = SnackBar(content: Text(error_code.toString(),textAlign: TextAlign.center,));
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(
@@ -65,9 +75,10 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const TextField(
+               TextField(
+                controller: _emailController,
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Color(0xffffffff),
                   prefixIcon: Padding(
@@ -88,11 +99,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
               /*----------------------PASSWORD-----------------*/
-              const Padding(
-                padding: EdgeInsets.fromLTRB(10.0, 23.0, 10.0, 0.0),
+               Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 23.0, 10.0, 0.0),
                 child: TextField(
+                  controller: _passwordController,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         filled: true,
                         fillColor: Color(0xffffffff),
                         prefixIcon: Padding(
@@ -131,11 +143,30 @@ class _LoginState extends State<Login> {
                   borderRadius: const BorderRadius.all(Radius.circular(100.0)),
                   color: Colors.lightGreen,
                   child: InkWell(
-                      onTap: () {},
+                      onTap: () async {
+                        print("login pressed");
+                        if(await _login()){
+                          // ignore: use_build_context_synchronously
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                        }else{
+                          if(error_code == 404){
+                            print("login fetch failed");
+                          }
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          print(error_code);
+                        }
+
+                      
+                      
+        
+
+                        
+                      },
                       child: const Text('Login',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              height: 3.3,
+                              height: 2.5,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0))),
                 ),

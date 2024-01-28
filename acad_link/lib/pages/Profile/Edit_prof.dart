@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Edit_Profile extends StatelessWidget {
-   Edit_Profile({super.key});
+class Edit_Prof extends StatelessWidget {
+   Edit_Prof({super.key});
   final _namecontroller = TextEditingController();
-  final _cgpacontroller = TextEditingController();
   final _phonenumbercontroller = TextEditingController();
   final _departmentcontroller = TextEditingController();
   final _graduationcontroller = TextEditingController();
@@ -101,7 +100,7 @@ class Edit_Profile extends StatelessWidget {
                 children: [
                         const SizedBox(height: 20,),
                          TextFormField(
-                          initialValue: 'Mohith Reddy',
+                          // initialValue: 'Mohith Reddy',
                           controller: _namecontroller,
                           decoration: const InputDecoration(
                             labelText: 'Name'
@@ -109,15 +108,7 @@ class Edit_Profile extends StatelessWidget {
                         ),
                         const SizedBox(height: 10,),
                         TextFormField(
-                          initialValue: '7.14',
-                          controller:  _cgpacontroller,
-                          decoration: const InputDecoration(
-                            labelText: 'CGPA'
-                          ),
-                        ),
-                        const SizedBox(height: 10,),
-                        TextFormField(
-                          initialValue: '9491741155',
+                          // initialValue: '9491741155',
                           controller:  _phonenumbercontroller,
                           decoration: const InputDecoration(
                             labelText: 'Phone Number'
@@ -125,7 +116,7 @@ class Edit_Profile extends StatelessWidget {
                         ),
                         const SizedBox(height: 10,),
                         TextFormField(
-                          initialValue: 'ECE',
+                          // initialValue: 'ECE',
                           controller:  _departmentcontroller,
                           decoration: const InputDecoration(
                             labelText: 'Department'
@@ -133,7 +124,7 @@ class Edit_Profile extends StatelessWidget {
                         ),
                         const SizedBox(height: 10,),
                         TextFormField(
-                          initialValue: 'undergraduate',
+                          // initialValue: 'undergraduate',
                           controller:  _graduationcontroller,
                           decoration: const InputDecoration(
                             labelText: 'Graduation'
@@ -147,7 +138,7 @@ class Edit_Profile extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        TextField(
+                         TextField(
                           maxLines: null,
                           controller:  _engagementscontroller,
                           decoration: const InputDecoration(
@@ -158,7 +149,7 @@ class Edit_Profile extends StatelessWidget {
                         const SizedBox(height: 30,),
                         TextFormField(
                           controller: _descriptioncontroller,
-                          initialValue: 'I am the best',
+                          // initialValue: 'I am the best',
                           maxLines: null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),

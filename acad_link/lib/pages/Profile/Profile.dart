@@ -1,6 +1,7 @@
-import 'package:acad_link/Edit_Profile.dart';
+import 'package:acad_link/pages/Profile/project_applied.dart';
 import 'package:flutter/material.dart';
-
+import 'Edit_stud.dart';
+import '../Profile/projects_posted.dart';
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class Profile extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.push(context, 
-                  MaterialPageRoute(builder: (context)=> const Edit_Profile()));
+                  MaterialPageRoute(builder: (context)=> Edit_Profile()));
                 }, 
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 58.0,vertical: 5.0),
@@ -120,7 +121,7 @@ class Profile extends StatelessWidget {
               color: Color.fromARGB(255, 230, 230, 230),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {Navigator.pop(context,MaterialPageRoute(builder: (context)=>const applied()));},
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all<Color>(Colors.black)),
               child: const Row(
                 children: [
@@ -140,7 +141,9 @@ class Profile extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const applications_recieved()));
+              },
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all<Color>(Colors.black)),
               child: const Row(
                 children: [

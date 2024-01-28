@@ -26,4 +26,4 @@ final Dio _dio = Dio(BaseOptions(
     } catch (e) {
       print('Error: $e');
     }
-  }
+  } 
