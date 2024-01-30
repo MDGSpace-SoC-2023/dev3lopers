@@ -1,58 +1,23 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, non_constant_identifier_names
 
-import 'package:acad_link/pages/QnA/qna_page.dart';
 import 'package:flutter/material.dart';
-import '../Home/Prof_projects.dart';
-import '../Home/ps.dart';
-import '../application.dart';
 
-class MainButt extends StatelessWidget {
-  final String name;
-  const MainButt({super.key, required this.name});
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => {
-        if (name == 'Project By Professors')
-          {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PP()))
-          },
-        if(name=='Project By Students')
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PS())),
-        if(name=='QnA portal')
-        Navigator.push(context, MaterialPageRoute(builder: (context) => qna_page())),
-      },
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(49),
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.fitHeight,
-              child: Text(name,
-                  selectionColor: Color.fromRGBO(209, 248, 248, 1),
-                  style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-          ),
-        ),
-        width: 312,
-        height: 175,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
-          color: Color.fromRGBO(180, 227, 222, 1),
-        ),
-      ),
-    );
+var description =TextEditingController();
+
+ String convert(List<String> s){
+    String ans='';
+    for(int i=0;i<s.length;i++)
+    {
+      ans+='${s[i]}\n';
+    }
+    return ans;
   }
-}
 
 class Pbox extends StatelessWidget {
   final String title;
   final String name;
-  const Pbox({super.key, required this.title, required this.name});
+  final List<String> Requirements;
+  const   Pbox({super.key, required this.title, required this.name,required this.Requirements});
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -62,45 +27,64 @@ class Pbox extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: const[
-               CircleAvatar(radius: 20,backgroundImage: AssetImage('assets/images/Mail.png'),),
-               Text('Sparsh Mittal',style: TextStyle(fontSize: 14),)
-            ],),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Row(children: [
+                 InkWell(
+                  onTap: (){ 
+                  },
+                  child: CircleAvatar(radius: 12,backgroundImage: AssetImage('assets/images/Mail.png'),)),
+                 SizedBox(width: 4,),
+                 Text(name,style: TextStyle(fontSize: 14),)
+              ],),
+            ),
             Column(
               children: [
                 Stack(children: [
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 20, 80, 20),
-                      child: Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(name),
-                                Text(title,
-                                    selectionColor:
-                                        Color.fromRGBO(209, 248, 248, 1),
-                                    style: TextStyle(
-                                       fontSize: 7,
-                                      decoration: TextDecoration.none,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ]),
+                  GestureDetector(
+                    onTap: (){
+                       showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dis_box();
+                  },
+                );
+                    },
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 20, 80, 20),
+                        child: Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(title,
+                                  style: TextStyle(fontSize: 17),),
+                                  Text(convert(Requirements),
+                                    overflow: TextOverflow.ellipsis,
+                                      selectionColor:
+                                          Color.fromRGBO(209, 248, 248, 1),
+                                      style: TextStyle(
+                                         fontSize: 14,
+                                        decoration: TextDecoration.none,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ]),
+                          ),
                         ),
                       ),
-                    ),
-                    width: 354,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color.fromRGBO(180, 227, 222, 1),
+                      width: 354,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color.fromRGBO(180, 227, 222, 1),
+                      ),
                     ),
                   ),
-                  Positioned(left: 280, top: 25, child: Apply(TIT: title))
+                  Positioned(right: 20, top: 20, child: Apply())
                 ]),
               ],
             ),
@@ -112,20 +96,17 @@ class Pbox extends StatelessWidget {
 }
 
 class Apply extends StatelessWidget {
-  final String TIT;
-  const Apply({super.key, required this.TIT});
+  const Apply({super.key});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Application(
-                      title: TIT,
-                      description: '1234567890',
-                      req: 'abcdefghijklmnopqrstuvwxyz',
-                    )));
+        showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Apply_box();
+                  },
+                );
       },
       child: Container(
         child: Center(
@@ -140,6 +121,149 @@ class Apply extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.blue[400], borderRadius: BorderRadius.circular(24)),
       ),
+    );
+  }
+}
+
+class Dis_box extends StatelessWidget {
+  const Dis_box({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Stack(children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.grey[400],
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height/ 1.5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Title of the questions',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: MediaQuery.of(context).size.width / 35),
+              ),
+              Divider(
+                height: MediaQuery.of(context).size.width / 16,
+                thickness: 3,
+                color: Colors.grey[500],
+                endIndent: 38,
+              ),
+              Text(
+                'description  blah blah blah',
+                style:
+                    TextStyle(fontSize: MediaQuery.of(context).size.width / 40),
+              )
+            ],
+          ),
+        ),
+      ]),
+    );
+  }
+}
+
+class Apply_box extends StatelessWidget {
+  const Apply_box({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Stack(fit: StackFit.passthrough, children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.grey[400],
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width / 1.5,
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Title',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: MediaQuery.of(context).size.width / 35),
+              ),
+              TextField(
+                controller: description,
+                maxLines: 7,
+                decoration: const InputDecoration(
+                    alignLabelWithHint: true,
+                    hintText: 'description blah blah blah'),
+                style:
+                    TextStyle(fontSize: MediaQuery.of(context).size.width / 40),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          right: 10,
+          bottom: 10,
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  description.clear();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 77, 94, 181),
+                      borderRadius: BorderRadius.circular(6)),
+                  width: 50,
+                  height: 25,
+                  child: Center(
+                    child: Text(
+                      'Apply',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 6,
+              ),
+              GestureDetector(
+                onTap: () {
+                  description.clear();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red[400],
+                      borderRadius: BorderRadius.circular(6)),
+                  width: 50,
+                  height: 25,
+                  child: Center(
+                    child: Text(
+                      'Clear',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }

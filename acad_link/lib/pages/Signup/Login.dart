@@ -1,8 +1,10 @@
 
-import "package:acad_link/pages/Home/Home.dart";
+import "package:acad_link/pages/Home/HomePage.dart";
 import "package:flutter/material.dart";
 import "dart:ui";
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:acad_link/globals.dart';
 
 import "SignUp.dart";
 class Login extends StatefulWidget {
@@ -16,24 +18,21 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   dynamic error_code;
+  String? error_response;
   // ignore: unnecessary_brace_in_string_interps
    late SnackBar snackBar;
-
     Future<bool> _login() async {
-      final Dio _dio = Dio(BaseOptions(
-        baseUrl: 'https://68b3-103-37-201-178.ngrok-free.app/',
-        contentType: 'application/json',
-      ));
+
       print("starting the request now");
       try {
-        Response response = await _dio.post('/users/login', data: {
+        Response response = await dio.post('/users/login', data: {
           'email': _emailController.text,
           'password': _passwordController.text,
         });
-        final authToken = response.data['authToken'];
+        authToken = response.data['authToken'];
         print(authToken);
         print("received response");
-        response = await _dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
+        response = await dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
         // print(response.data);
         if(response.data['verfied']){
           print(response.data);
@@ -43,6 +42,7 @@ class _LoginState extends State<Login> {
       } on DioException catch (e) {
         print(e.response?.statusCode);
         error_code = e.response?.statusCode;
+        error_response = e.response?.data.toString()??'server error';
         print("login failed");
         return false;
       }
@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
 
-    snackBar = SnackBar(content: Text(error_code.toString(),textAlign: TextAlign.center,));
+    
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(
@@ -146,21 +146,17 @@ class _LoginState extends State<Login> {
                       onTap: () async {
                         print("login pressed");
                         if(await _login()){
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.setBool('isLoggedIn', true);
+                          prefs.setString('authToken', authToken??'' );
                           // ignore: use_build_context_synchronously
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  Home()));
                         }else{
-                          if(error_code == 404){
-                            print("login fetch failed");
-                          }
+                          snackBar = SnackBar(content: Text(error_response.toString(),textAlign: TextAlign.center,));
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          print(error_code);
+                          print(error_response);
                         }
-
-                      
-                      
-        
-
                         
                       },
                       child: const Text('Login',

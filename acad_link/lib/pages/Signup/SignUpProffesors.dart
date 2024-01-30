@@ -2,14 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:acad_link/globals.dart';
+import 'Login.dart';
 
 final _name = TextEditingController();
 final _emailEntered = TextEditingController();
 final _password = TextEditingController();
-final Dio _dio =  Dio(BaseOptions(
-      baseUrl: 'https://aaa3-103-37-201-176.ngrok-free.app/',
-      contentType: 'application/json'
-    ));
+
 String email = '';
 String pass = '';
 String name = '';
@@ -84,19 +83,28 @@ class SignUpProffesors extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton(
-                  onPressed: () => {
-                    email = _emailEntered.text,
-                    pass = _password.text,
-                    name = _name.text,
-                    _dio.post('users/registeruser', 
+                  onPressed: () async {
+                    email = _emailEntered.text;
+                    pass = _password.text;
+                    name = _name.text;
+                    try{
+                      response = await dio.post('/users/registeruser', 
                     data: {
                       'name': name,
                       'role':true,
                       'email':email,
                       'password': pass
-                      
-                    })
-
+                    });
+                    print('code is running here');
+                    print(response?.data);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                    }on DioException catch(error){
+                      print('code is here in the error');
+                      print(error);
+                      print(error.response);
+                    }
+                  
                   },
                   child: Text(
                     'Signup',
