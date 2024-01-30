@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var connectToMongo = require('./db');
+const multer = require('multer');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/auth');
@@ -32,7 +33,7 @@ app.use('/users', usersRouter);
 app.use('/posts',postRouter);
 app.use('/proposal',proposalRouter);
 app.use('/profile',profileRouter);
-app.use('./qna' ,qnaRouter);
+app.use('/qna' ,qnaRouter);
 app.use('/',filterRouter)
 
 connectToMongo();
@@ -51,6 +52,24 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+// // Set up storage engine
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//       cb(null, 'public/');
+//   },
+//   filename: function(req, file, cb) {
+//       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

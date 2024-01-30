@@ -37,6 +37,8 @@ try{
       console.error("Error while hashing password:", err);
       return res.status(500).send("pasword hash error");
     }
+    const role = req.body.role;
+    const name = req.body.name
      // Now, 'hash' contains the hashed password
       user = await User.create({
         name:req.body.name,
@@ -48,7 +50,9 @@ try{
 
     const data = {
       user:{
-        id:user.id
+        id:user.id,
+        name:name,
+        role:role,
       }
     }
     const authToken = jwt.sign(data,jwt_secret);
@@ -74,20 +78,22 @@ router.post('/login',[
 ], async (req,res)=>{
   const errors = validationResult(req);
   if(!errors.isEmpty()){
-    return res.status(400).json({errors:errors.array()});
+    return res.status(400).json({alert:"please enter valid mail"});
   }
   const {email,password} = req.body;
   try{
     let user = await User.findOne({email});
     if(!user){
-      return res.status(400).json({error:"user doesnot exist"})
+      return res.status(400).json({alert:"user doesnot exist"})
     }
     const passwordCompare = await bcrypt.compare(password,user.password);
     if(!passwordCompare){
-      return res.status(400).json({error:"password is incorrect"});
+      return res.status(400).json({alert:"password is incorrect"});
     }
     const data = {
-      id:user.id
+      id:user.id,
+      role:user.role,
+      name:user.name
     }
     const authToken = jwt.sign(data,jwt_secret);
     res.json({authToken});

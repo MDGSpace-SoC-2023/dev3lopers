@@ -2,13 +2,22 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 // Schema for project post
-const qaSchema = new Schema({
+const ansSchema = new Schema({
+    questionId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Qna',
+        required:true
+    },
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required:true,
      },
-    questionText: {
+     userName:{
+        type:String,
+        required:true,
+     },
+    answerText: {
         type: String,
     },
     pic:{
@@ -17,8 +26,7 @@ const qaSchema = new Schema({
     clubs:{
         type:[String],
     },
-
 });
 
-const Qna = mongoose.model('Qna', qaSchema);
-module.exports = Qna;
+const Ans = mongoose.model('Ans', ansSchema);
+module.exports = Ans;

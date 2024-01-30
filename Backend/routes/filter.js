@@ -9,22 +9,22 @@ const Question = require('../models/qnas')
 
 router.get('/filterbydates',async (req,res)=>{
     try {
-        const { startDate, endDate ,skills } = req.query;
+        const { startDate, endDate } = req.query;
 
         // Create a filter object
         let filters = {};
         if (startDate || endDate) {
-            filters.createdAt = {};
+            filters.expiryDate = {};
             if (startDate) {
-                filters.createdAt.$gte = new Date(startDate);
+                filters.expiryDate.$gte = new Date(startDate);
             }
             if (endDate) {
-                filters.createdAt.$lte = new Date(endDate);
+                filters.expiryDate.$lte = new Date(endDate);
             }
         }
-        if (skills) {
-            filters['requirements.skills'] = { $in: skills.split(',') };
-        }
+        // if (skills) {
+        //     filters['requirements.skills'] = { $in: skills.split(',') };
+        // }
         
 
         const posts = await Project.find(filters);

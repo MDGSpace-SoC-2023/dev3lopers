@@ -9,6 +9,14 @@ const projSchema = new Schema({
         ref: 'User',
         required:true,
      },
+     userName:{
+        type: String,
+        required:true,
+     },
+     role:{
+        type:Boolean,
+        required:true,
+     },
     title: {
         type: String,
         required: true,
@@ -20,11 +28,18 @@ const projSchema = new Schema({
     requirements: {
         type: reqSchema, // Using Req as a subdocument schema
     },
+    expiryDate: {
+        type: Date,
+    
+    },
     createdAt: {      // Date when the post was created
         type: Date,
         default: Date.now
     }
 });
+
+projSchema.index({ expiryDate: 1 }, { expireAfterSeconds: 0 });
+projSchema.index({ expiryDate: 1 });
 
 const Project = mongoose.model('Project', projSchema);
 module.exports = Project;

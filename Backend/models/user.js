@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose;
 
 const userSchema = new Schema({
+   profilePic: {
+    type: String, // Store the file ID or URL of the uploaded image
+    default: '' // Default can be an empty string or a path to a default image
+  },
    name:{
         type : String,
         required : true
@@ -21,7 +25,7 @@ const userSchema = new Schema({
    },
    password :{
         type : String,
-        required : true
+        // required : true
    },
    mobileNumber: {
      type: String,

@@ -8,14 +8,14 @@ const reqSchema = new Schema({
         type: String,
     },
     year: {
-        type: Number,
+        type: String,
     },
     skills: {
         type: [String],
         required: true,
     },
     cgpa: {
-        type: Number,
+        type: String,
     },
 });
 
