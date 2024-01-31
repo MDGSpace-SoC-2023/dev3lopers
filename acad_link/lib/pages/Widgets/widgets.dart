@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-
+import 'package:acad_link/pages/Profile/project_applied.dart';
 var description =TextEditingController();
 
  String convert(List<String> s){
@@ -17,7 +17,7 @@ class Pbox extends StatelessWidget {
   final String title;
   final String name;
   final List<String> Requirements;
-  const   Pbox({super.key, required this.title, required this.name,required this.Requirements});
+  const  Pbox({super.key, required this.title, required this.name,required this.Requirements});
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -46,7 +46,7 @@ class Pbox extends StatelessWidget {
                        showDialog<void>(
                   context: context,
                   builder: (BuildContext context) {
-                    return Dis_box();
+                    return Dis_box();//need to tell him to adjust this widget, requirements are not in order, have to take skills from that requirements, but not able to take
                   },
                 );
                     },

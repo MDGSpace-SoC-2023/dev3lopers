@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/pages/Widgets/widgets.dart';
+import 'package:dio/dio.dart';
 import 'package:acad_link/globals.dart';
 
 class prof_projects extends StatefulWidget {
@@ -13,7 +14,8 @@ class _prof_projectsState extends State<prof_projects> {
 
   List<dynamic> professor_project_posts = [];
   Future<void> getprofessorprojectposts() async{
-        response = await dio.get('/posts/profproject');
+      
+         response = await dio.get('/posts/profproject',options: Options(headers: {'auth-token':authToken}));
         professor_project_posts = response?.data??[];
     }
   @override
@@ -26,7 +28,6 @@ class _prof_projectsState extends State<prof_projects> {
             return const CircularProgressIndicator(); 
           } else if (snapshot.hasError) {
             print(snapshot.error);
-            print('code is running here');
             return const Column(
               children: [
                 Icon(Icons.signal_wifi_connected_no_internet_4_sharp,size:100),
@@ -64,3 +65,4 @@ class _prof_projectsState extends State<prof_projects> {
             ));
   }
 }
+

@@ -56,7 +56,7 @@ class applications_recieved extends StatelessWidget {
               description: posted_projects[index]['description'],
               id : posted_projects[index]['_id']
             );
-
+      
         },itemCount: posted_projects.length,);
             
           }
@@ -189,8 +189,9 @@ class _propose extends StatelessWidget {
               bottom: 30,
               right: 30,
               child: InkWell(
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: ((context) => ListOf())));
+                onTap: ()async{
+                 
+                  Navigator.push(context,MaterialPageRoute(builder: ((context) => ListOf(id:id))));
                 },
                 child: CircleAvatar(
                       radius: 20,

@@ -106,8 +106,7 @@ class Question_box extends StatelessWidget {
                 borderRadius: const BorderRadius.only(topLeft:Radius.circular(12),topRight: Radius.circular(12)),
                 color: Colors.grey[400],
               ),
-              width: 390,
-              height: 180,
+              constraints: BoxConstraints(minHeight: 180),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,15 +120,15 @@ class Question_box extends StatelessWidget {
                         fontSize: 12),
                   ),
                   Divider(
-                    height: MediaQuery.of(context).size.width / 16,
+                    height: 15,
                     thickness: 3,
                     color: Colors.grey[500],
                     endIndent: 38,
                   ),
-                  Text(
-                    'description  blah blah blah',
+                  const Text(
+                    'description  blah blah ',
                     style:
-                        TextStyle(fontSize: MediaQuery.of(context).size.width / 40),
+                        TextStyle(fontSize: 15),
                   )
                 ],
               ),
