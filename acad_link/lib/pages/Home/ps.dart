@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '/pages/Widgets/widgets.dart';
 import 'package:acad_link/globals.dart';
@@ -13,7 +14,7 @@ class _student_projectsState extends State<student_projects> {
   List<dynamic> student_project_posts = [];
   Future<void> getprofessorprojectposts() async{
       
-         response = await dio.get('/posts/userproject');
+         response = await dio.get('/posts/userproject',options: Options(headers: {'auth-token':authToken}));
         student_project_posts = response?.data??[];
     }
   @override
@@ -49,12 +50,13 @@ class _student_projectsState extends State<student_projects> {
               itemCount: student_project_posts.length,
               itemBuilder: (context, index) {
                 return  Pbox(
-                    title:
-                    
+                    title: 
                       student_project_posts[index]['title'],
+                      id: student_project_posts[index]['_id'],
                       description:student_project_posts[index]['description'],
                       name: student_project_posts[index]['userName'],
                       Requirements: (student_project_posts[index]['requirements']['skills'] as List<dynamic>).map((e)=>e.toString()).toList(),
+                      apply_status: !student_project_posts[index]['isApplied'],
                       );
               },
             );

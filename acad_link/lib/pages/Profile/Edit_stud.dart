@@ -1,15 +1,40 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class Edit_Profile extends StatelessWidget {
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:acad_link/globals.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+String convert(List<String> s){
+    String ans='';
+    for(int i=0;i<s.length;i++)
+    {
+      ans+='${s[i]}\n';
+    }
+    return ans;
+  }
+
+class Edit_Profile extends StatefulWidget {
+
    Edit_Profile({super.key});
-  final _namecontroller = TextEditingController();
-  final _cgpacontroller = TextEditingController();
-  final _phonenumbercontroller = TextEditingController();
-  final _departmentcontroller = TextEditingController();
+
+  @override
+  State<Edit_Profile> createState() => _Edit_ProfileState();
+}
+
+class _Edit_ProfileState extends State<Edit_Profile> {
+  
+
+  final _namecontroller = TextEditingController(text:prefs.getString('name'));
+  final _cgpacontroller = TextEditingController(text: prefs.getString('cgpa'));
+  final _phonenumbercontroller = TextEditingController(text: prefs.getString('mobileNumber'));
+  final _departmentcontroller = TextEditingController(text: prefs.getString('department'));
   final _graduationcontroller = TextEditingController();
-  final _yearcontroller  = TextEditingController();
   final _engagementscontroller = TextEditingController();
-  final _descriptioncontroller = TextEditingController();
+  final _yearcontroller  = TextEditingController();
+  final _descriptioncontroller = TextEditingController(text: prefs.getString('description'));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,37 +85,7 @@ class Edit_Profile extends StatelessWidget {
                   const SizedBox(height: 37,),
                    Align(
                     alignment: Alignment.center,
-                    child: Stack(
-                      children: [
-                        const CircleAvatar(
-                          radius: 67,
-                          backgroundColor: Color.fromARGB(255, 239, 251, 255),
-                          child: CircleAvatar(
-                            radius: 60.0,
-                            backgroundImage: AssetImage(
-                              'assets/images/OIP.jpeg'
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            onTap: (){},
-                            child: const CircleAvatar(
-                              backgroundColor: Colors.black,
-                              radius: 21.2,
-                              child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 20,
-                              child: Icon(Icons.add_a_photo_outlined,
-                              color: Colors.black,),
-                              ),
-                            ),
-                          ))
-                      ],
-                    ),
+                    // child :ProfilePicPicker(),
                   ),
                   const SizedBox(height: 5,),
         ])),
@@ -156,17 +151,52 @@ class Edit_Profile extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30,),
+
                         TextFormField(
                           controller: _descriptioncontroller,
                           // initialValue: 'I am the best',
                           maxLines: null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Description'
+                            labelText: 'Description',
+                            hintText: 'repo links, resume links, your projects, etc...'
                           ),
                         ),
                         const SizedBox(height: 15,),
-                         MaterialButton(onPressed: () {
+                         MaterialButton(onPressed: () async{                          
+                          try{
+                            prefs.setString('name', _namecontroller.text);
+                            prefs.setString('mobileNumber', _phonenumbercontroller.text);
+                            prefs.setString('department', _departmentcontroller.text);
+                            prefs.setString('graduation', _graduationcontroller.text);
+                            prefs.setString('year', _yearcontroller.text);
+                            prefs.setString('engagements', _engagementscontroller.text);
+                            prefs.setString('cgpa', _cgpacontroller.text);
+                            prefs.setString('description', _descriptioncontroller.text);
+                            response = await dio.put('/profile/saveprofile',
+                           data:{
+                            'password':prefs.getString('password'),
+                              'email':prefs.getString('email'),
+                              'role':prefs.getBool('role'),
+                              'name':_namecontroller.text,
+                              'mobileNumber':_phonenumbercontroller.text,
+                              'department':_departmentcontroller.text,
+                              'graduation':_graduationcontroller.text,
+                              'year':_yearcontroller.text,
+                              'engagements':  _engagementscontroller.text.split(','),
+                              'cgpa':_cgpacontroller.text,
+                              'description':_descriptioncontroller.text,
+
+                           },options: Options(headers: {'auth-token':authToken})
+                            );
+                            print(response?.data);
+                            SnackBar snackBar = const SnackBar(content: Text('saved',textAlign: TextAlign.center,));
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }on DioException catch(error){
+                            print(error.response);
+                          }
+                          print('done');
 
                         },
                         color: Colors.green[400],
@@ -176,6 +206,68 @@ class Edit_Profile extends StatelessWidget {
             ))
                       ],
                     ),
+    );
+  }
+}
+
+class ProfilePicPicker extends StatefulWidget {
+  @override
+  _ProfilePicPickerState createState() => _ProfilePicPickerState();
+}
+
+class _ProfilePicPickerState extends State<ProfilePicPicker> {
+  File? _image;
+  bool isPicked =false;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+       _image = File(pickedImage!.path);
+      isPicked =true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+                      children: [
+                         CircleAvatar(
+                          radius: 67,
+                          backgroundColor: const Color.fromARGB(255, 239, 251, 255),
+                          child: CircleAvatar(
+                            radius: 60.0,
+                            backgroundImage: FileImage(isPicked?_image!:File('images/flutter-logo.png')),
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child:  ElevatedButton(
+              onPressed: _pickImage,
+              child:const CircleAvatar(
+                              backgroundColor: Colors.black,
+                              radius: 21.2,
+                              child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 20,
+                              child: Icon(Icons.add_a_photo_outlined,
+                              color: Colors.black,),
+                              ),
+                            ), 
+            ),)
+                      ],
+                    ),
+            
+          ],
+        ),
+      ),
     );
   }
 }

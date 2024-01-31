@@ -25,17 +25,17 @@ class _LoginState extends State<Login> {
 
       print("starting the request now");
       try {
-        Response response = await dio.post('/users/login', data: {
+        response = await dio.post('/users/login', data: {
           'email': _emailController.text,
           'password': _passwordController.text,
         });
-        authToken = response.data['authToken'];
+        authToken = response?.data['authToken'];
         print(authToken);
         print("received response");
         response = await dio.post('/users/getuser', options: Options(headers: {'auth-token':authToken}));
         // print(response.data);
-        if(response.data['verfied']){
-          print(response.data);
+        if(response?.data['verfied']){
+          print(response?.data);
         }
         return true;
 
@@ -144,11 +144,17 @@ class _LoginState extends State<Login> {
                   color: Colors.lightGreen,
                   child: InkWell(
                       onTap: () async {
+                        print('code is runnign here inthe most miserable way');
                         print("login pressed");
                         if(await _login()){
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          print (response!.data);
+                          print(response!.data);
+                          print(response!.data['user']['email']);
                           prefs.setBool('isLoggedIn', true);
                           prefs.setString('authToken', authToken??'' );
+                          prefs.setString('email', response?.data['user']['email']);
+                          prefs.setString('password',response?.data['user']['password']);
+                          prefs.setBool('role', response?.data['user']['role']);
                           // ignore: use_build_context_synchronously
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  Home()));
                         }else{

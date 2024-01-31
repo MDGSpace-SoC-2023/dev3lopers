@@ -4,6 +4,7 @@ import 'package:acad_link/globals.dart';
 var titleController = TextEditingController();
 var descriptionController = TextEditingController();
 var skillController= TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
 
 class AddProject extends StatefulWidget {
@@ -17,6 +18,7 @@ class _AddProjectState extends State<AddProject> {
    String? project_title;
    String? description;
    List<String>? skills;
+   
 
   Future<void> post_project() async{
     response = await dio.post(
@@ -26,7 +28,8 @@ class _AddProjectState extends State<AddProject> {
       'description':description,
       'requirements':{
         'skills': skills
-      }
+      },
+      'expiryDate': '${selectedDate.year.toString()}-0${selectedDate.month.toString()}-0${selectedDate.day.toString()}T00:00:00.000Z' ,
     },
     options: Options(headers: {'auth-token':authToken}));
     print(response);
@@ -81,6 +84,10 @@ class _AddProjectState extends State<AddProject> {
               Navigator.pop(context);
               // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              titleController.clear();
+              descriptionController.clear();
+              skillController.clear();
+              selectedDate=DateTime.now();
                 }
                 
               }on DioException catch(error){
@@ -147,7 +154,6 @@ class DatePickerDemo extends StatefulWidget {
 }
 
 class _DatePickerDemoState extends State<DatePickerDemo> {
-  DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, non_constant_identifier_names
 
+import 'package:acad_link/globals.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:acad_link/pages/Profile/project_applied.dart';
 var description =TextEditingController();
@@ -18,9 +20,14 @@ class Pbox extends StatelessWidget {
   final String name;
   final List<String> Requirements;
   final String description;
-  const  Pbox({super.key, required this.title, required this.name,required this.Requirements, required this.description});
+  final bool apply_status;
+  final String id;
+  
+    Pbox({super.key,required this.id, required this.title, required this.name,required this.Requirements, required this.description, required this.apply_status});
+
   @override
   Widget build(BuildContext context) {
+   
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -86,7 +93,7 @@ class Pbox extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(right: 20, top: 20, child: Apply())
+                Positioned(right: 20, top: 20, child: Apply(apply_status: apply_status,id:id))
               ]),
             ],
           ),
@@ -112,7 +119,7 @@ class show_project extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Text('This is title',style: TextStyle(fontFamily: 'lemon'),),),
+              Center(child: Text(title,style: TextStyle(fontFamily: 'lemon'),),),
               Divider(height: 4,),
               Text('requirements:',style: TextStyle(fontStyle: FontStyle.italic,decoration: TextDecoration.underline),),
               Text(convert(requriements)),
@@ -127,15 +134,19 @@ class show_project extends StatelessWidget {
 }
 
 class Apply extends StatelessWidget {
-  const Apply({super.key});
+  final String id;
+  final bool apply_status;
+  const Apply({super.key, required this.apply_status, required this.id});
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+     if(apply_status==true){
+       return InkWell(
       onTap: () {
         showDialog<void>(
                   context: context,
                   builder: (BuildContext context) {
-                    return Apply_box();
+                    return Apply_box(id:id);
                   },
                 );
       },
@@ -153,13 +164,28 @@ class Apply extends StatelessWidget {
             color: Colors.blue[400], borderRadius: BorderRadius.circular(24)),
       ),
     );
+  }else{
+     return Container(
+       child: Center(
+           child: Text(
+         'applied',
+         style: TextStyle(
+           color: Colors.white,
+         ),
+       )),
+       width: 70,
+       height: 30,
+       decoration: BoxDecoration(
+           color: Colors.blueGrey[400], borderRadius: BorderRadius.circular(24)),
+     );
+  }
+   
   }
 }
 
-
 class Apply_box extends StatelessWidget {
-  const Apply_box({super.key});
-
+  const Apply_box({super.key, required this.id});
+  final String id;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -168,7 +194,7 @@ class Apply_box extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey[400],
+            color: Colors.white,
           ),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.width / 1.5,
@@ -196,14 +222,31 @@ class Apply_box extends StatelessWidget {
           ),
         ),
         Positioned(
-          right: 10,
+          right: MediaQuery.of(context).size.width/4,
           bottom: 10,
           child: Row(
             children: [
               GestureDetector(
-                onTap: () {
+                onTap: () async{
+                  try{
+                    response = await dio.post('/posts/submitpost/$id',
+                  data: {
+                    'description': description.text,
+                    'isAccepted': false,
+                    'isRejected':false,
+                  },
+                  
+                  options: Options(headers: {'auth-token':authToken})
+                  );
+                   Navigator.of(context).pop();
+                   SnackBar snackBar = SnackBar(content: Text('applied successfully',textAlign: TextAlign.center,));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }on DioException catch(error){
+                    dynamic error_response_code = error.response?.statusCode;
+                    SnackBar snackBar = SnackBar(content: Text('$error_response_code',textAlign: TextAlign.center,));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                   Navigator.of(context).pop();
-                  description.clear();
                 },
                 child: Container(
                   decoration: BoxDecoration(

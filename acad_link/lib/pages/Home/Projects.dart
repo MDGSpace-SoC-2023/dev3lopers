@@ -37,19 +37,20 @@ class _ProjectsState extends State<Projects>  with SingleTickerProviderStateMixi
           child: AppBar(
             bottom: TabBar(
                 controller: _tabController,
-                tabs: const [
-                Column(
+                tabs:  [
+                const Column(
                   children: [
                     Text('Professor'),
                     Icon(Icons.account_circle_rounded,size: 30,),
                   ],
                 ),
-                Column(
+                const Column(
                   children: [
                     Text('Students'),
                     Icon(Icons.school,size: 30,),
                   ],
-                )
+                ),
+                DatePickerDemo(),
               ]),
             backgroundColor: Colors.blue[400],
             
@@ -60,6 +61,38 @@ class _ProjectsState extends State<Projects>  with SingleTickerProviderStateMixi
           children: const [prof_projects(),student_projects()],
         )
       );
+  }
+}
+
+class DatePickerDemo extends StatefulWidget {
+  @override
+  _DatePickerDemoState createState() => _DatePickerDemoState();
+}
+
+class _DatePickerDemoState extends State<DatePickerDemo> {
+  DateTime selectedDate = DateTime(2025);
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(onPressed: ()
+              {
+                _selectDate(context);              
+              },
+              child: const Icon(Icons.filter_alt_rounded),);
   }
 }
 

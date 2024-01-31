@@ -40,8 +40,8 @@ class ListOf extends StatelessWidget {
                 child:  Column(
                   children: [
                     Text('\u{1F62D}',style: TextStyle(fontSize: 100),),
-                    Text('No Posts to display'),
-                    Text('come back next time')
+                    Text('No proposals to display'),
+                    Text('see you again'),
                   ],
                 ),
               );
@@ -54,7 +54,7 @@ class ListOf extends StatelessWidget {
                 return proposal_sent(
                   name: 'Mohith',
                   description: proposals[index]['description'],
-                  id:proposals[index]['postId']
+                  id:proposals[index]['_id']
                 );
               },
                           );
@@ -127,6 +127,8 @@ class proposal_sent extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: ()async{
+                      response = await dio.put('/proposal/reject/$id');
+                      print(response?.data);
                       
                     },
                     child: const ColoredBox(color: Colors.redAccent, child: Icon(Icons.close)

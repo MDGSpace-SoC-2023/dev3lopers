@@ -50,11 +50,14 @@ class applications_recieved extends StatelessWidget {
                   ),
             );
           }else{
+            print(posted_projects);
             return ListView.builder(itemBuilder: (context, index) {
           return _propose(
               title: posted_projects[index]['title'],
               description: posted_projects[index]['description'],
-              id : posted_projects[index]['_id']
+              id : posted_projects[index]['_id'],
+              no_of_proposals: posted_projects[index]['no_of_proposals']
+
             );
       
         },itemCount: posted_projects.length,);
@@ -67,10 +70,11 @@ class applications_recieved extends StatelessWidget {
 }
 
 class _propose extends StatelessWidget {
+  final int no_of_proposals;
   final String title;
   final String description;
   final String id;
-  const _propose({super.key, required this.title, required this.description, required this.id});
+  const _propose({super.key, required this.title, required this.description, required this.id, required this.no_of_proposals});
   @override
   Widget build(BuildContext context) {
     return  Padding(
@@ -198,7 +202,7 @@ class _propose extends StatelessWidget {
                       backgroundColor: Colors.blue[600],
                       child: Center(
                         child: Text(
-                          '12',
+                          '$no_of_proposals',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),

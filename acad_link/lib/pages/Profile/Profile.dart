@@ -7,8 +7,6 @@ import 'Edit_stud.dart';
 import '../Profile/projects_posted.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
-
-
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
