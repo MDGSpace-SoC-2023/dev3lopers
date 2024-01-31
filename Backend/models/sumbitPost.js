@@ -13,8 +13,7 @@ const subSchema = new Schema({
         ref: 'Project' // Reference to the User model
     },
     isAccepted:{
-        type:Boolean,
-        required:true
+        type : Boolean,
     },
 
     description :{

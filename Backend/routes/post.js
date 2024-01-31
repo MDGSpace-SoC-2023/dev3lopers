@@ -115,7 +115,8 @@ router.post('/submitpost/:id',fetchUser,async (req,res)=>{
         let projDes = await submitPost.create({
             userId,
             postId,
-            description
+            description,
+            isAccepted:req.body.isAccepted
         });
         res.json(projDes);
     } catch (error) {
@@ -207,7 +208,6 @@ router.get('/profproject',fetchUser, async (req, res) => {
   console.log(postIds.toString());
       // Create a response object for each project, indicating if it is applied by the user
       const projectsWithAppliedStatus = profprojects.map(project => {
-        console.log(project.id)
         return {
           ...project.toObject(),
           isApplied: postIds.toString().includes(project._id)
