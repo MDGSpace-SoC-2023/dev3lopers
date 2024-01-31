@@ -110,7 +110,7 @@ router.post('/getuser', fetchUser,async(req,res)=>{
  const userId = req.user.id;
  console.log(userId);
 const user = await User.findById(userId);
-    res.json({verfied:true,user});
+    res.json({verfied:true,user:user});
   }catch(error){
     console.error(error.message);
    // return res.status(500).json({error:"some internal server error occured "})

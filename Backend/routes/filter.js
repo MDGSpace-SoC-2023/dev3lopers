@@ -12,6 +12,7 @@ router.get('/filterbydates',async (req,res)=>{
         const { startDate, endDate } = req.query;
 
         // Create a filter object
+        // if()
         let filters = {};
         if (startDate || endDate) {
             filters.expiryDate = {};

@@ -15,6 +15,9 @@ const subSchema = new Schema({
     isAccepted:{
         type : Boolean,
     },
+    isRejected:{
+        type : Boolean,
+    },
 
     description :{
         type : String,

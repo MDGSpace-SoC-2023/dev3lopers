@@ -111,12 +111,25 @@ router.post('/submitpost/:id',fetchUser,async (req,res)=>{
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
+        const project = await Project.findById(postId);
+        
+    if (!project) {
+        return res.status(404).json({ error: 'Project not found' });
+      }
+  
+      // Increment the no_of_proposals field
+      project.no_of_proposals += 1;
+  
+      // Save the updated project
+      await project.save();
+  
 
         let projDes = await submitPost.create({
             userId,
             postId,
             description,
-            isAccepted:req.body.isAccepted
+            isAccepted:req.body.isAccepted,
+            isRejected:req.body.isRejected
         });
         res.json(projDes);
     } catch (error) {
@@ -136,7 +149,8 @@ router.get('/myproject',fetchUser,async (req,res)=>{
         if (!projects || projects.length === 0) {
             return res.json([]);
         }
-
+        const projlength = projects.length;
+         console.log(projlength)
         // Send the list of projects to the client
         res.json( projects);
     } catch (error) {
@@ -223,9 +237,9 @@ router.get('/profproject',fetchUser, async (req, res) => {
   });
   
 
-router.get('/userproject',async (req,res)=>{
+router.get('/userproject',fetchUser,async (req,res)=>{
     try {
-        // const userId = req.user.id;
+        const userId = req.user.id;
 
         // Find all projects that have the specified user ID
         const userprojects = await Project.find({ role: false });
@@ -234,9 +248,25 @@ router.get('/userproject',async (req,res)=>{
         if (!userprojects || userprojects.length === 0) {
             return res.json([]);
         }
-
+        const submitPosts = await submitPost.find({ userId });
+  
+        // Extract postIds from submitPosts
+        const postIds = submitPosts.map(submitPost => submitPost.postId);
+       
+    console.log(postIds.toString());
+        // Create a response object for each project, indicating if it is applied by the user
+        const projectsWithAppliedStatus = userprojects.map(project => {
+          return {
+            ...project.toObject(),
+            isApplied: postIds.toString().includes(project._id)
+          };
+        });
+    
+        // Send the list of projects with applied status to the client
+        res.json(projectsWithAppliedStatus);
+    
         // Send the list of projects to the client
-        res.json(userprojects);
+        // res.json(userprojects);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Some error in server");

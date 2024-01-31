@@ -30,14 +30,21 @@ const userSchema = new Schema({
    mobileNumber: {
      type: String,
    },
+
    department: {
+     type: String,
+   },
+   graduation: {
+     type: String,
+   },
+   year: {
      type: String,
    },
    engagements: {
      type: [String], // Assuming multiple engagements as an array of strings
    },
    cgpa: {
-     type: Number,
+     type: String,
    },
    description: {
      type: String,

@@ -17,6 +17,10 @@ const projSchema = new Schema({
         type:Boolean,
         required:true,
      },
+     no_of_proposals:{
+        type:Number,
+        default: 0
+     },
     title: {
         type: String,
         required: true,
