@@ -50,7 +50,9 @@ class _student_projectsState extends State<student_projects> {
               itemBuilder: (context, index) {
                 return  Pbox(
                     title:
+                    
                       student_project_posts[index]['title'],
+                      description:student_project_posts[index]['description'],
                       name: student_project_posts[index]['userName'],
                       Requirements: (student_project_posts[index]['requirements']['skills'] as List<dynamic>).map((e)=>e.toString()).toList(),
                       );

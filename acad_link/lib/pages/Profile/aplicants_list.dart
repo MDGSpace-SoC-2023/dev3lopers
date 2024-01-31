@@ -24,22 +24,26 @@ class ListOf extends StatelessWidget {
             return const CircularProgressIndicator(); 
           } else if (snapshot.hasError) {
             print(snapshot.error);
-            return const Column(
-              children: [
-                Icon(Icons.signal_wifi_connected_no_internet_4_sharp,size:100),
-                Text('check your internet connection'),
-                Text('or',style: TextStyle(fontSize: 30),),
-                Text('server error, so try later'),
-              ],
+            return const Center(
+              child:  Column(
+                children: [
+                  Icon(Icons.signal_wifi_connected_no_internet_4_sharp,size:100),
+                  Text('check your internet connection'),
+                  Text('or',style: TextStyle(fontSize: 30),),
+                  Text('server error, so try later'),
+                ],
+              ),
             );
           } else {
             if(proposals.isEmpty){
-              return const Column(
-                children: [
-                  Text('\u{1F62D}',style: TextStyle(fontSize: 100),),
-                  Text('No Posts to display'),
-                  Text('come back next time')
-                ],
+              return const Center(
+                child:  Column(
+                  children: [
+                    Text('\u{1F62D}',style: TextStyle(fontSize: 100),),
+                    Text('No Posts to display'),
+                    Text('come back next time')
+                  ],
+                ),
               );
             }else{
               print(proposals);
@@ -47,7 +51,11 @@ class ListOf extends StatelessWidget {
               return  ListView.builder(
               itemCount: proposals.length,
               itemBuilder: (context, index) {
-                return const proposal_sent();
+                return proposal_sent(
+                  name: 'Mohith',
+                  description: proposals[index]['description'],
+                  id:proposals[index]['postId']
+                );
               },
                           );
             }
@@ -58,7 +66,11 @@ class ListOf extends StatelessWidget {
 }
 
 class proposal_sent extends StatelessWidget {
-  const proposal_sent({super.key});
+  const proposal_sent({super.key,required this.name, required this.description, required this.id});
+
+  final String name;
+  final String description;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +89,7 @@ class proposal_sent extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'name of the student',
+                    'name',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none,
@@ -95,7 +107,7 @@ class proposal_sent extends StatelessWidget {
                         color: Colors.cyan[100],
                         borderRadius: BorderRadius.circular(12)),
                     child: const SingleChildScrollView(
-                      child: Text('description given by the applicant',
+                      child: Text('description',
                           style: TextStyle(
                             fontSize: 15,
                             decoration: TextDecoration.none,
@@ -108,16 +120,27 @@ class proposal_sent extends StatelessWidget {
               ],
             ),
           ),
-          const Positioned(
+           Positioned(
               top: 10,
               right: 10,
               child: Row(
                 children: [
-                  ColoredBox(color: Colors.redAccent, child: Icon(Icons.close)),
+                  InkWell(
+                    onTap: ()async{
+                      
+                    },
+                    child: const ColoredBox(color: Colors.redAccent, child: Icon(Icons.close)
+                  )),
                   SizedBox(width: 12),
-                  ColoredBox(
-                      color: Colors.lightGreen,
-                      child: Icon(Icons.done_outlined))
+                  InkWell(
+                    onTap: ()async{
+                      response = await dio.put('/proposal/accept/$id');
+                      print(response?.data);
+                    },
+                    child: const ColoredBox(
+                        color: Colors.lightGreen,
+                        child: Icon(Icons.done_outlined)),
+                  )
                 ],
               )),
         ],

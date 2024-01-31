@@ -17,45 +17,46 @@ class Pbox extends StatelessWidget {
   final String title;
   final String name;
   final List<String> Requirements;
-  const  Pbox({super.key, required this.title, required this.name,required this.Requirements});
+  final String description;
+  const  Pbox({super.key, required this.title, required this.name,required this.Requirements, required this.description});
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.fill,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(children: [
-                 InkWell(
-                  onTap: (){ 
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(children: [
+               InkWell(
+                onTap: (){ 
+                },
+                child: CircleAvatar(radius: 12,backgroundImage: AssetImage('assets/images/Mail.png'),)),
+               SizedBox(width: 4,),
+               Text(name,style: TextStyle(fontSize: 14),)
+            ],),
+          ),
+          Column(
+            children: [
+              Stack(children: [
+                GestureDetector(
+                  onTap: (){
+                     showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return show_project(title: title,description: description,requriements: Requirements,);//need to tell him to adjust this widget, requirements are not in order, have to take skills from that requirements, but not able to take
+                },
+              );
                   },
-                  child: CircleAvatar(radius: 12,backgroundImage: AssetImage('assets/images/Mail.png'),)),
-                 SizedBox(width: 4,),
-                 Text(name,style: TextStyle(fontSize: 14),)
-              ],),
-            ),
-            Column(
-              children: [
-                Stack(children: [
-                  GestureDetector(
-                    onTap: (){
-                       showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dis_box();//need to tell him to adjust this widget, requirements are not in order, have to take skills from that requirements, but not able to take
-                  },
-                );
-                    },
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 20, 80, 20),
-                        child: Expanded(
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 20, 80, 20),
+                      child: Expanded(
+                        child: SingleChildScrollView(
+                          // scrollDirection: Axis.horizontal,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
+                            scrollDirection: Axis.vertical,
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,19 +77,49 @@ class Pbox extends StatelessWidget {
                           ),
                         ),
                       ),
-                      width: 354,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Color.fromRGBO(180, 227, 222, 1),
-                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color.fromRGBO(180, 227, 222, 1),
                     ),
                   ),
-                  Positioned(right: 20, top: 20, child: Apply())
-                ]),
-              ],
-            ),
-          ],
+                ),
+                Positioned(right: 20, top: 20, child: Apply())
+              ]),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class show_project extends StatelessWidget {
+  const show_project ({super.key, required this.requriements, required this.title, required this.description});
+  
+  final List<String> requriements;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(13.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(child: Text('This is title',style: TextStyle(fontFamily: 'lemon'),),),
+              Divider(height: 4,),
+              Text('requirements:',style: TextStyle(fontStyle: FontStyle.italic,decoration: TextDecoration.underline),),
+              Text(convert(requriements)),
+              Divider(height: 6,),
+              Text('Description',style: TextStyle(fontFamily: 'lemon'),),
+              Text(description)
+          ]),
         ),
       ),
     );
@@ -125,51 +156,6 @@ class Apply extends StatelessWidget {
   }
 }
 
-class Dis_box extends StatelessWidget {
-  const Dis_box({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Stack(children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.grey[400],
-          ),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height/ 1.5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Title of the questions',
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: MediaQuery.of(context).size.width / 35),
-              ),
-              Divider(
-                height: MediaQuery.of(context).size.width / 16,
-                thickness: 3,
-                color: Colors.grey[500],
-                endIndent: 38,
-              ),
-              Text(
-                'description  blah blah blah',
-                style:
-                    TextStyle(fontSize: MediaQuery.of(context).size.width / 40),
-              )
-            ],
-          ),
-        ),
-      ]),
-    );
-  }
-}
 
 class Apply_box extends StatelessWidget {
   const Apply_box({super.key});

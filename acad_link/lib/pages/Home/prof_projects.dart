@@ -56,6 +56,7 @@ class _prof_projectsState extends State<prof_projects> {
                       professor_project_posts[index]['title'],
                       name: professor_project_posts[index]['userName'],
                       Requirements: (professor_project_posts[index]['requirements']['skills'] as List<dynamic>).map((e)=>e.toString()).toList(),
+                      description: professor_project_posts[index]['description'],
                       );
               },
                           );
