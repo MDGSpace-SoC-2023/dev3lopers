@@ -85,7 +85,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   const SizedBox(height: 37,),
                    Align(
                     alignment: Alignment.center,
-                    // child :ProfilePicPicker(),
+                    child :ProfilePicPicker(),
                   ),
                   const SizedBox(height: 5,),
         ])),
@@ -243,7 +243,7 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                           backgroundColor: const Color.fromARGB(255, 239, 251, 255),
                           child: CircleAvatar(
                             radius: 60.0,
-                            backgroundImage: FileImage(isPicked?_image!:File('images/flutter-logo.png')),
+                            backgroundImage: FileImage(),
                           ),
                         ),
                         Positioned(
