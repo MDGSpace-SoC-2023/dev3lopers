@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:acad_link/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+void main()
+{
+  runApp(Edit_Profile());
+}
 
 String convert(List<String> s){
     String ans='';
@@ -85,7 +89,10 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   const SizedBox(height: 37,),
                    Align(
                     alignment: Alignment.center,
-                    child :ProfilePicPicker(),
+                    child :Container(
+                      height: 160,
+                      width:200,
+                      child: ProfilePicPicker()),
                   ),
                   const SizedBox(height: 5,),
         ])),
@@ -217,57 +224,40 @@ class ProfilePicPicker extends StatefulWidget {
 
 class _ProfilePicPickerState extends State<ProfilePicPicker> {
   File? _image;
-  bool isPicked =false;
 
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-       _image = File(pickedImage!.path);
-      isPicked =true;
-    });
+  // This is the image picker
+  final _picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
   }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-                      children: [
-                         CircleAvatar(
-                          radius: 67,
-                          backgroundColor: const Color.fromARGB(255, 239, 251, 255),
-                          child: CircleAvatar(
-                            radius: 60.0,
-                            backgroundImage: FileImage(),
-                          ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child:  ElevatedButton(
-              onPressed: _pickImage,
-              child:const CircleAvatar(
-                              backgroundColor: Colors.black,
-                              radius: 21.2,
-                              child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 20,
-                              child: Icon(Icons.add_a_photo_outlined,
-                              color: Colors.black,),
-                              ),
-                            ), 
-            ),)
-                      ],
-                    ),
-            
-          ],
-        ),
-      ),
+    return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor:Color.fromARGB(255, 135, 157, 255),
+                  child: _image != null
+                      ? Image.file(_image!, fit: BoxFit.cover)
+                      : const Text('Please select an image',style: TextStyle(fontSize:12),),
+                ),
+                const SizedBox(height: 5),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _openImagePicker,
+                    child: const Text('Select An Image',style: TextStyle(fontSize:12)),
+                  ),
+                )
+              ]),
+            ),
     );
   }
 }

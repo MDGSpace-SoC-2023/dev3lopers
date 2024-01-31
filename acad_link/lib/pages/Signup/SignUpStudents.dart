@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/pages/Signup/Login.dart';
 import 'dart:ui';
 
-
+final enrol = TextEditingController();
 final _emailEntered = TextEditingController();
 final _password = TextEditingController();
 final _name = TextEditingController();
@@ -74,6 +74,16 @@ class _SignUpStudents extends State<SignUpStudents> {
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.fromLTRB(27, 0, 27, 5),
+                child: TextField(
+                  controller: enrol,
+                  decoration: InputDecoration(
+                    hintText: 'enrollment number',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.fromLTRB(29, 0, 29, 0),
                 child: TextField(
                   controller: _password,
@@ -99,7 +109,7 @@ class _SignUpStudents extends State<SignUpStudents> {
                        Response response =  await _dio.post('/users/registeruser',
                        data: {
                           'name': name,
-                          'enrollmentNumber':22109238,
+                          'enrollmentNumber':enrol,
                           'email': email,
                           'password': pass,
                           'role': false,
@@ -108,13 +118,12 @@ class _SignUpStudents extends State<SignUpStudents> {
                        Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Login()));
+                          builder: (context) => const Login()));
                     
                        
                       }on DioException catch(e){
                         print(e.response);
                       }
-                      
                   },
                   child: Text(
                     'Signup',

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +30,7 @@ class _all_questionsState extends State<all_questions> {
         if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
+            print(snapshot.error);
             return const Column(
               children: [
                 Icon(Icons.signal_wifi_connected_no_internet_4_sharp,size:100),

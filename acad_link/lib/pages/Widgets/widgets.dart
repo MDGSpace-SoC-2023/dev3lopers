@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, non_constant_identifier_names
 
 import 'package:acad_link/globals.dart';
+import 'package:acad_link/pages/Home/HomePage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:acad_link/pages/Profile/project_applied.dart';
@@ -133,20 +134,25 @@ class show_project extends StatelessWidget {
   }
 }
 
-class Apply extends StatelessWidget {
+class Apply extends StatefulWidget {
   final String id;
   final bool apply_status;
   const Apply({super.key, required this.apply_status, required this.id});
 
   @override
+  State<Apply> createState() => _ApplyState();
+}
+
+class _ApplyState extends State<Apply> {
+  @override
   Widget build(BuildContext context) {
-     if(apply_status==true){
+     if(widget.apply_status==true){
        return InkWell(
       onTap: () {
         showDialog<void>(
                   context: context,
                   builder: (BuildContext context) {
-                    return Apply_box(id:id);
+                    return Apply_box(id:widget.id);
                   },
                 );
       },
@@ -183,9 +189,15 @@ class Apply extends StatelessWidget {
   }
 }
 
-class Apply_box extends StatelessWidget {
+class Apply_box extends StatefulWidget {
   const Apply_box({super.key, required this.id});
   final String id;
+
+  @override
+  State<Apply_box> createState() => _Apply_boxState();
+}
+
+class _Apply_boxState extends State<Apply_box> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -229,7 +241,7 @@ class Apply_box extends StatelessWidget {
               GestureDetector(
                 onTap: () async{
                   try{
-                    response = await dio.post('/posts/submitpost/$id',
+                    response = await dio.post('/posts/submitpost/${widget.id}',
                   data: {
                     'description': description.text,
                     'isAccepted': false,
@@ -238,15 +250,16 @@ class Apply_box extends StatelessWidget {
                   
                   options: Options(headers: {'auth-token':authToken})
                   );
-                   Navigator.of(context).pop();
                    SnackBar snackBar = SnackBar(content: Text('applied successfully',textAlign: TextAlign.center,));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                   Navigator.of(context).pop();
+                  
                   }on DioException catch(error){
                     dynamic error_response_code = error.response?.statusCode;
                     SnackBar snackBar = SnackBar(content: Text('$error_response_code',textAlign: TextAlign.center,));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 },
                 child: Container(
                   decoration: BoxDecoration(

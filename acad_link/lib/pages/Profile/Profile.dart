@@ -1,3 +1,4 @@
+import 'package:acad_link/globals.dart';
 import 'package:acad_link/pages/Profile/project_applied.dart';
 import 'package:acad_link/pages/QnA/all_question.dart';
 import 'package:acad_link/pages/Signup/Login.dart';
@@ -8,6 +9,7 @@ import '../Profile/projects_posted.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Profile extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -40,9 +42,9 @@ class Profile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10.0,),
-            const Center(
+             Center(
               child: Text(
-                'Mohith Reddy',
+                prefs.getString('name')??'mohith',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Lemon',
@@ -50,9 +52,9 @@ class Profile extends StatelessWidget {
                 ),
               ),
             ),
-            const Center(
+             Center(
               child: Text(
-                '22116029',
+                prefs.getString('enrollmentNumber')??'22116029',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Dancing Script',
@@ -70,7 +72,7 @@ class Profile extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(bottom: 3.0),
                 child: Text(
-                  '    mohith1904@gmail.com',                
+                  'mohith1904@gmail.com',                
                 ),
               )],
             ),

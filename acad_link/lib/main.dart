@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = prefs.getBool('isLoggedIn')??false;
-    authToken = prefs.getString('authToken');
+    authToken = prefs.getString('authToken')??'';
     print(isLoggedIn);
     return MaterialApp(
       // Application name
