@@ -231,6 +231,7 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
   Future<void> _openImagePicker() async {
     final XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery);
+    print(pickedImage?.path);    
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
