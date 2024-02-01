@@ -47,7 +47,6 @@ class Profile extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Lemon',
-                
                 ),
               ),
             ),
@@ -55,7 +54,7 @@ class Profile extends StatelessWidget {
               child: Text(
                 prefs.getString('enrollmentNumber')??'22116029',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const  TextStyle(
                   fontFamily: 'Dancing Script',
                   fontWeight: FontWeight.bold,
                 )

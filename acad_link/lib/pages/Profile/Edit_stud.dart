@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:acad_link/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-File image=File('');
-File imagepicked=File('');
+File image=File('/home/mohith/Pictures/Screenshots/Screenshot from 2023-06-21 22-15-13.png');
+File imagepicked=File('/home/mohith/Pictures/Screenshots/Screenshot from 2023-06-21 22-15-13.png');
 
 String convert(List<String> s){
     String ans='';
@@ -55,8 +54,6 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               ],
                   stops: [
                 0.77,
-                // 0.27,
-                // 0.65,
                 0.01
               ])),
             padding: const EdgeInsets.only(left: 18.0, top: 8.0, right: 18),

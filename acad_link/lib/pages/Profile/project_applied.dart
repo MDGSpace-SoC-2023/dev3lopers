@@ -13,7 +13,6 @@ String convert(List<String> s){
     return ans;
   }
 
-void main() => runApp(const applied());
 
 class applied extends StatelessWidget {
   const applied({super.key});
