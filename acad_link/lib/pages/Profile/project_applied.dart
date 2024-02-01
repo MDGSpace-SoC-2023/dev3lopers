@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
-import "dart:math";
 import 'package:awesome_dialog/awesome_dialog.dart';
+
+import '../../globals.dart';
 
 String convert(List<String> s){
     String ans='';
@@ -18,6 +20,11 @@ class applied extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     List<dynamic> applied_projects = [];
+    Future<void> get_applied_projects() async{
+      response = await dio.get('/posts/appliedproject', options: Options(headers: {'auth-token': authToken}));
+      applied_projects = response?.data??[];
+    }
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(25))),
@@ -25,24 +32,58 @@ class applied extends StatelessWidget {
         title:const Text('Projects Applied',),
       ),
 
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context,index )
-        {
-          return projects_applied(title: 'My project', requriements: {'cgpa':7,'skills':['mohith','dummy','420','722498']}, description: 'this is description');
-        },
-      ),
+      body:  FutureBuilder(future: get_applied_projects(), builder: ((context, snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return const Center(child: CircularProgressIndicator());
+        }else if(snapshot.hasError){
+          print(applied_projects);
+          print(snapshot.error);
+          return const Center(
+            child:  Column(
+               children: [
+                    Icon(Icons.signal_wifi_connected_no_internet_4_sharp,size:100),
+                    Text('check your internet connection'),
+                    Text('or',style: TextStyle(fontSize: 30),),
+                    Text('server error, so try later'),
+                  ],
+            ),
+          );
+        }else{
+          if(applied_projects.isEmpty){
+            return const Center(
+              child: Column(
+                    children: [
+                      Text('\u{1F62D}',style: TextStyle(fontSize: 100),),
+                      Text('No Posts to display'),
+                      Text('try posting a project')
+                    ],
+                  ),
+            );
+          }else{
+            print(applied_projects);
+            return ListView.builder(itemBuilder: (context, index) {
+          return projects_applied(
+              title: 'a title',
+              description: 'a description',
+              requriements: {'skills':['cgpa' , 'sgpa']},
+              status : 1
+            );
+        },itemCount: applied_projects.length,);
+            
+          }
+        }
+      })),
     );
   }
 }
 
 class projects_applied extends StatelessWidget {
-  projects_applied({super.key,required this.requriements,required this.title,required this.description});
+  projects_applied({super.key,required this.requriements,required this.title,required this.description,required this.status});
   final Map<String,dynamic> requriements;
   final String title;
   final String description;
-  
-  final List<Color> _boxColor = [ Colors.red, Colors.green, Colors.blue, Colors.white, Colors.orange, Colors.pink, Colors.blueGrey, Colors.yellow];
+  final int status;
+  final List<Color> _boxColor = [ Colors.red, Colors.green, Colors.blue];
   
   @override
   Widget build(BuildContext context) {
@@ -61,7 +102,7 @@ class projects_applied extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: _boxColor[Random().nextInt(_boxColor.length)]
+            color: _boxColor[status]
           ),
           width: MediaQuery.of(context).size.width -20,
           height: (MediaQuery.of(context).size.width)/2-10,

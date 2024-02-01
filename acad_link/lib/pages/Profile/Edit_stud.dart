@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:acad_link/globals.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-void main()
-{
-  runApp(Edit_Profile());
-}
+
+File image=File('');
+File imagepicked=File('');
 
 String convert(List<String> s){
     String ans='';
@@ -172,6 +171,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         const SizedBox(height: 15,),
                          MaterialButton(onPressed: () async{                          
                           try{
+                            imagepicked =image;
                             prefs.setString('name', _namecontroller.text);
                             prefs.setString('mobileNumber', _phonenumbercontroller.text);
                             prefs.setString('department', _departmentcontroller.text);
@@ -223,18 +223,14 @@ class ProfilePicPicker extends StatefulWidget {
 }
 
 class _ProfilePicPickerState extends State<ProfilePicPicker> {
-  File? _image;
-
-  // This is the image picker
   final _picker = ImagePicker();
-  // Implementing the image picker
   Future<void> _openImagePicker() async {
     final XFile? pickedImage =
         await _picker.pickImage(source: ImageSource.gallery);
     print(pickedImage?.path);    
     if (pickedImage != null) {
       setState(() {
-        _image = File(pickedImage.path);
+        image = File(pickedImage.path);
       });
     }
   }
@@ -246,8 +242,8 @@ class _ProfilePicPickerState extends State<ProfilePicPicker> {
                 CircleAvatar(
                   radius: 50,
                   backgroundColor:Color.fromARGB(255, 135, 157, 255),
-                  child: _image != null
-                      ? Image.file(_image!, fit: BoxFit.cover)
+                  child: image != null
+                      ? Image.file(image, fit: BoxFit.cover)
                       : const Text('Please select an image',style: TextStyle(fontSize:12),),
                 ),
                 const SizedBox(height: 5),

@@ -1,10 +1,10 @@
+import 'dart:io';
 import 'package:acad_link/globals.dart';
 import 'package:acad_link/pages/Profile/project_applied.dart';
-import 'package:acad_link/pages/QnA/all_question.dart';
 import 'package:acad_link/pages/Signup/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Edit_stud.dart';
+import 'Edit_stud.dart' as _Image;
 import '../Profile/projects_posted.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -30,14 +30,13 @@ class Profile extends StatelessWidget {
         child: ListView(
           children:  [
             const SizedBox(height: 16.0),
-            const Align(
+             Align(
               child: CircleAvatar(
                 radius: 61.0,
                 backgroundColor: Colors.black,
                 child: CircleAvatar(
                   radius: 60.0,
-                  backgroundImage: AssetImage(
-                      'assets/images/OIP.jpeg'),
+                  backgroundImage:  FileImage(_Image.imagepicked),
                 ),
               ),
             ),
@@ -104,7 +103,7 @@ class Profile extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(context, 
-                      MaterialPageRoute(builder: (context)=> Edit_Profile()));
+                      MaterialPageRoute(builder: (context)=> _Image.Edit_Profile()));
                     }, 
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 58.0,vertical: 5.0),
