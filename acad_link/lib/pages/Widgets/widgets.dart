@@ -251,6 +251,7 @@ class _Apply_boxState extends State<Apply_box> {
                   options: Options(headers: {'auth-token':authToken})
                   );
                    SnackBar snackBar = SnackBar(content: Text('applied successfully',textAlign: TextAlign.center,));
+                   
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                    Navigator.of(context).pop();
                   

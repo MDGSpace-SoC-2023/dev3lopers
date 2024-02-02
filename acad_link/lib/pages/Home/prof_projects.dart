@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/pages/Widgets/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:acad_link/globals.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class prof_projects extends StatefulWidget {
   const prof_projects({super.key});
@@ -16,7 +17,13 @@ class _prof_projectsState extends State<prof_projects> {
   Future<void> getprofessorprojectposts() async{
       
          response = await dio.get('/posts/profproject',options: Options(headers: {'auth-token':authToken}));
-        professor_project_posts = response?.data??[];
+          professor_project_posts = response?.data??[];
+        
+    }
+    void init(){
+      super.initState();
+      getprofessorprojectposts();
+
     }
   @override
   Widget build(BuildContext context) {
@@ -24,9 +31,9 @@ class _prof_projectsState extends State<prof_projects> {
             child: FutureBuilder(
               future: getprofessorprojectposts(),
               builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator(); 
-          } else if (snapshot.hasError) {
+                      } else if (snapshot.hasError) {
             print(snapshot.error);
             return const Column(
               children: [
@@ -36,7 +43,7 @@ class _prof_projectsState extends State<prof_projects> {
                 Text('server error, so try later'),
               ],
             );
-          } else {
+                      } else {
             if(professor_project_posts.isEmpty){
               return const Column(
                 children: [
@@ -48,23 +55,36 @@ class _prof_projectsState extends State<prof_projects> {
             }else{
               print(professor_project_posts);
               // List<String> requirement_list = professor_project_posts[0]['requirements']['skills'].map((dynamic item) => item.toString()).toList()
-              return  ListView.builder(
-              itemCount: professor_project_posts.length,
-              itemBuilder: (context, index) {
-                return  Pbox(
-                    title:
-                      professor_project_posts[index]['title'],
-                      name: professor_project_posts[index]['userName'],
-                      Requirements: (professor_project_posts[index]['requirements']['skills'] as List<dynamic>).map((e)=>e.toString()).toList(),
-                      description: professor_project_posts[index]['description'],
-                      apply_status: !professor_project_posts[index]['isApplied'],
-                      id:professor_project_posts[index]['_id'],
-                      );
-              },
+              return  Stack(
+                children: [
+                  ListView.builder(
+                  itemCount: professor_project_posts.length,
+                  itemBuilder: (context, index) {
+                    return  Pbox(
+                        title:
+                          professor_project_posts[index]['title'],
+                          name: professor_project_posts[index]['userName'],
+                          Requirements: (professor_project_posts[index]['requirements']['skills'] as List<dynamic>).map((e)=>e.toString()).toList(),
+                          description: professor_project_posts[index]['description'],
+                          apply_status: !professor_project_posts[index]['isApplied'],
+                          id:professor_project_posts[index]['_id'],
                           );
+                  },
+                              ),
+                              Positioned( top: 10,
+              right: 10,
+              child:FloatingActionButton(onPressed: (){
+                setState(() {
+                  getprofessorprojectposts();
+                });
+              },
+            child: Icon(Icons.refresh, color: Colors.green,),
+            ),  )
+                ],
+              );
             }
-           
-          }}  
+                       
+                      }}  
             ));
   }
 }
